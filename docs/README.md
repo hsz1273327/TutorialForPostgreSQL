@@ -12,7 +12,7 @@ postgresql的上限极高,单实例基本可以认为给多少资源都能用满
 
 + 缓存: 物化视图
 
-+ 搜索引擎: 全文搜索索引足以应对简单场景;配合插件zhparser等分词工具可以实现中文支持,丰富的索引类型,支持函数索引,条件索引
++ 搜索引擎: 全文搜索索引足以应对简单场景;配合插件zhparser,jieba等分词工具可以实现中文支持,丰富的索引类型,支持函数索引,条件索引
 
 + 文档数据库: JSON,JSONB,XML,HStore原生支持,可以替代mongodb
 
@@ -26,11 +26,13 @@ postgresql的上限极高,单实例基本可以认为给多少资源都能用满
 
 除此之外还有通过插件实现的功能,包括
 
-+ 空间数据: PostGIS扩展(杀手锏),内建的几何类型支持,GiST索引.
++ 空间数据: [PostGIS扩展(杀手锏)](https://github.com/postgis/postgis),内建的几何类型支持,GiST索引.
 
-+ 时序数据:timescaledb时序数据库插件,支持连续聚合等流式处理.
++ 时序数据:[timescaledb时序数据库插件](https://github.com/timescale/timescaledb),支持连续聚合等流式处理.
 
-+ 图数据库: 递归查询,更有AgensGraph扩展实现完整的图数据库功能
++ 图数据库: 递归查询,更有[Apache AGE扩展](https://github.com/apache/incubator-age)实现完整的图数据库功能.
+
+
 本文会按顺序逐次介绍
 
 ## 应用领域
@@ -47,7 +49,7 @@ pg生态下大致的应用领域有:
 
 + 本文使用docker作为pg的部署工具,我会在docker中模拟pg和插件的运行环境,我使用的镜像为[hsz1273327/pg-allinone](https://github.com/Basic-Components/pg-allinone)
 
-+ 本文使用的pg版本为`12`
++ 本文使用的pg版本为`11`,因为
 
 + SQL语句,基本不用不合规范的SQL语句
 
@@ -67,7 +69,7 @@ pg生态下大致的应用领域有:
 -- autocommit: true
 ```
 
-    switched autocommit mode to True
+    committed current transaction &  switched autocommit mode to True
 
 
 ```sql
@@ -75,7 +77,9 @@ select 'hello world' as welcome
 ```
 
     1 row(s) returned.
-    
+
+
+
 
 
 <table>
@@ -87,3 +91,13 @@ select 'hello world' as welcome
 </tbody>
 </table>
 
+
+
+## 设置测试仓库
+
+我们创建一个test仓库用于测试
+
+
+```sql
+CREATE DATABASE test
+```
